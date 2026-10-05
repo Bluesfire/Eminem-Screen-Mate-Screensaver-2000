@@ -1,0 +1,2 @@
+# Preserve packaged files exactly, including their recorded SHA-256 hashes.
+* -text

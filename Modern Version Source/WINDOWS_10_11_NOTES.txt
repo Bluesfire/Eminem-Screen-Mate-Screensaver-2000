@@ -1,0 +1,175 @@
+Eminem ScreenMate - Windows 10/11 Compatibility Notes
+======================================================
+
+Status
+------
+Multi-monitor revision (October 4, 2026)
+--------------------------------------
+The local wrapper now captures every display separately in physical pixels
+before showing any saver windows. Each display gets its own unscaled frozen
+desktop, including portrait displays and displays at negative coordinates.
+
+An original Win16 screensaver instance runs for each monitor. Each instance
+uses the original animation engine, project, frame timing, and media.
+The main engine's original Random(150) selects destruction actions at its
+original timer rate. A shared coordinator assigns each selected action to a
+display; secondary engines execute that same original action script. Related
+kick sequences stay on one display so their original completion logic works.
+An action type already running cannot start again on another display.
+The original eminem.SCR and eminem.IMX
+are preserved byte-for-byte. The previous replacement animation renderer and
+replacement playback have been removed. Intro visibility is controlled by
+recognizing the original album image on the main display.
+
+ScreenMateMonitorHost.exe starts its own private WineVDM child. A process-local
+ScreenMateMonitorHooks.dll gives that child its target monitor's screen size,
+positions its saver window on that monitor, and supplies the monitor's frozen
+bitmap for desktop capture. The adapters use MinHook v1.3.4, pinned to commit
+c3fcafdc10146beb5919319d0683e44e3c30d537; its license ships in the installer.
+Reference: https://github.com/TsudaKageyu/minhook/tree/v1.3.4
+The adapters affect only their own child processes and do not alter Windows
+system DLLs. Closing the host terminates its WineVDM child through a job object.
+The original opening is visible only on the primary display. Secondary
+openings are covered by their desktop snapshots. Connected displays are
+detected on each launch; there is no multi-monitor toggle.
+
+Audio: secondary engines retain their original sound callbacks but their output
+buffers are silenced. Destruction sound requests are forwarded to the main
+engine's original WaveX mixer using its identical original WAV resources,
+including original loop and volume settings. Intro voices and the background
+song are never forwarded. Only the main engine is audible.
+
+The unsafe experimental native-to-Win16 callback implementation is removed.
+Current compatibility observers return to small 16-bit stubs that continue
+directly into the original functions. Original files on disk stay untouched.
+Owned WineVDM SEGV/interrupt dialogs automatically terminate that runtime,
+allowing the wrapper to restore the desktop. The stop script also stops owned
+monitor hosts; job objects terminate their private runtime children.
+
+Use "Run Eminem ScreenMate Now.cmd" to try the LOCAL updated build. It does
+launches the build in this folder. The updated installer is
+installer\build\Eminem ScreenMate Setup.exe. No system installation is performed
+during build.
+
+Build: powershell -ExecutionPolicy Bypass -File wrapper\build.ps1
+Diagnostics: run the EXE with --self-test (no visible saver) or --monitor-test
+(16-second original-engine monitor test) or --intro-test (60-second original
+playback test); results are in analysis\monitor-validation. All test instances
+are closed automatically. Production snapshots are temporary and deleted on
+exit. Building the monitor adapters requires the installed Visual C++ tools.
+
+Verification: wrapper and adapters build; original SCR/IMX preservation and
+32-bit adapter checks pass. Live testing confirms original engines running
+on 1920x1080, 768x1360 portrait, and 1920x1080 displays, each with its own desktop.
+Live tests require access to the unlocked interactive desktop. A restricted
+session or another active Windows saver can make CopyFromScreen fail with
+"The handle is invalid". The historical notes below describe the previous
+single-monitor compatibility package.
+
+The original May 2000 ScreenMate is confirmed running on 64-bit Windows 11
+through WineVDM/OTVDM. The same approach is intended for 64-bit Windows 10.
+
+What was incompatible
+---------------------
+The original eminem.SCR and its Ovation runtime DLLs are 16-bit Windows NE
+binaries. 64-bit Windows 10/11 cannot execute them natively.
+
+Compatibility method
+--------------------
+WineVDM/OTVDM v0.9.0 is used as a portable Win16 compatibility layer.
+The finished compatibility package installs its private runtime under:
+
+  C:\Program Files\Eminem ScreenMate
+
+and installs only the modern 64-bit wrapper into:
+
+  C:\Windows\System32\Eminem ScreenMate.scr
+
+The original 16-bit program and its runtime files are never copied into the
+real Windows or System32 directories.
+
+The original 16-bit installer is NOT used. Its installation logic was
+reproduced manually inside WineVDM's private WINDOWS directory:
+
+  WINDOWS\eminem.SCR
+  WINDOWS\eminem.IMX
+  WINDOWS\eminem.INI
+  WINDOWS\SYSTEM\ox16cls.dll
+  WINDOWS\SYSTEM\ox16lib.dll
+  WINDOWS\SYSTEM\ox16sys.dll
+  WINDOWS\SYSTEM\wavex16b.dll
+
+Critical WineVDM settings
+-------------------------
+WINDIR=WINDOWS
+WINVER=3.1
+EnableRegistryRedirection=1
+DWMDesktopDCFix=0
+DIBPalette=0
+
+DWMDesktopDCFix MUST remain disabled for this ScreenMate. When enabled,
+WineVDM substitutes a synthetic layered window for GetDC(NULL). Ovation
+captures that synthetic surface and the result is a white background.
+
+With the fix disabled, Ovation captures the real composited desktop and
+renders the original Eminem animation/effects over it correctly.
+
+Running
+-------
+After installation, Eminem ScreenMate appears in the normal Windows
+Screen Saver Settings list. It can be selected, previewed, and assigned a
+wait time exactly like a modern .scr file.
+
+The Start Menu also contains "Eminem ScreenMate", which opens a small control
+application with:
+
+  Enable
+  Disable
+  Run now
+  Open Windows Screen Saver Settings
+
+The original saver itself still runs through WineVDM when Windows invokes the
+modern wrapper with /s.
+
+Windows preview/configuration compatibility
+-------------------------------------------
+Modern Windows calls screen savers with /p to draw inside the small monitor
+preview in the Screen Saver Settings dialog. The original 2000 Win16 saver
+predates that contract and otherwise paints over the Settings dialog.
+
+The 64-bit wrapper handles /p itself with a safe embedded preview. It also
+handles /c natively because the original ScreenMate has no configurable
+options. Only /s is forwarded to the original Win16 engine.
+
+Observed behavior
+-----------------
+The 2000 Ovation project snapshots the current primary desktop before showing
+its own full-screen topmost WindowsScreenSaverClass window. It then animates
+the original assets over that frozen desktop image.
+
+On a multi-monitor system the original code uses GetSystemMetrics(SM_CXSCREEN /
+SM_CYSCREEN), so it targets the primary monitor only. This is faithful to the
+single-monitor assumptions of the original software.
+
+Preservation
+------------
+The original eminem.zip and original extracted files have not been modified.
+The installed compatibility copy remains isolated under:
+
+  C:\Program Files\Eminem ScreenMate\compat\otvdm\otvdm-v0.9.0
+
+The eminem.IMX project was also confirmed to contain the original media:
+104 BMP images, 2 JPEG images, and 13 PCM WAV files.
+
+Uninstall
+---------
+Eminem ScreenMate is registered in Windows Installed Apps / Programs and
+Features. Its GUI uninstaller removes the Program Files runtime, System32
+wrapper, Start Menu shortcuts, and registration entries.
+
+Trust / signing
+---------------
+This preservation package is not Authenticode-signed. Windows may therefore
+show "Unknown publisher" or a SmartScreen warning. That is separate from the
+installer UI: the installer itself is a normal Windows GUI executable and
+does not use PowerShell for installation.
