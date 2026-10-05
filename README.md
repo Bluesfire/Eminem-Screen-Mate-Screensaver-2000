@@ -1,3 +1,5 @@
+> **AI disclosure:** AI was used to write and debug the modern Windows compatibility code. The original screensaver, animations, and sounds are preserved unchanged.
+
 # Eminem ScreenMate
 
 The original Eminem ScreenMate from 2000, running on modern Windows.
@@ -7,6 +9,11 @@ Same old screensaver.
 
 The original program still draws the animations and plays the sounds through [WineVDM](https://github.com/otya128/winevdm).
 All original files stay intact.
+
+## Where it came from
+
+We found the original `eminem.zip` through the Wayback Machine, in [an archived download from eminemfans.com](https://web.archive.org/web/20070307034311/http://www.eminemfans.com/main/extras/download/eminem.zip).
+That archive is included here.
 
 ## Run it
 
