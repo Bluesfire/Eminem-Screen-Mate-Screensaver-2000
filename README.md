@@ -1,5 +1,7 @@
 > **AI disclosure:** AI was used to write and debug the modern Windows compatibility code. The original screensaver, animations, and sounds are preserved unchanged.
 
+> **Preservation disclosure:** Uploaded for software preservation. Original rights remain with their respective owners. No new license is applied to the original screensaver or its media.
+
 ![Eminem ScreenMate running over its Windows control window](images/eminem-screenmate.png)
 
 # Eminem ScreenMate
