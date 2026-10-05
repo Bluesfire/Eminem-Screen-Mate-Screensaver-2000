@@ -14,13 +14,17 @@ All original files stay intact.
 
 ## Where it came from
 
-We found the original `eminem.zip` through the Wayback Machine, in [an archived download from eminemfans.com](https://web.archive.org/web/20070307034311/http://www.eminemfans.com/main/extras/download/eminem.zip).
+I've been hunting this down on and off for the last 11 years. Originally, it was uploaded to both Interscope and Eminem's websites, but all of those archive links come up dry once you try to actually download the file. I had almost given up hope on ever seeing it again, but tonight I was in the mood to hunt again and actually found it. 
+
+The original `eminem.zip` was found through the Wayback Machine, in [an archived download from eminemfans.com](https://web.archive.org/web/20070307034311/http://www.eminemfans.com/main/extras/download/eminem.zip).
 That archive is included here.
+
+Alongside the original `eminem.zip`, this repo contains a modern version of the screensaver that will work on Windows 10/11, and supports multiple monitors of varying resolutions and orientations.
 
 ## Run it
 
 Install [Eminem ScreenMate Setup.exe](Eminem%20ScreenMate%20Setup.exe), then choose **Eminem ScreenMate** in Windows Screen Saver Settings.
-The Start Menu app has a **Run now** button too.
+The Start Menu app has a **Run now** button too. It supports playing the screensaver whether it is currently enabled or disabled, and also offers a shortcut to the Windows screensaver settings.
 
 Built for 64-bit Windows 10 and 11; tested on Windows 11.
 
