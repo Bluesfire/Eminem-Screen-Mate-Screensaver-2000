@@ -1,5 +1,7 @@
 > **AI disclosure:** AI was used to write and debug the modern Windows compatibility code. The original screensaver, animations, and sounds are preserved unchanged.
 
+![Eminem ScreenMate running over its Windows control window](images/eminem-screenmate.png)
+
 # Eminem ScreenMate
 
 The original Eminem ScreenMate from 2000, running on modern Windows.
