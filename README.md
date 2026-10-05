@@ -24,7 +24,7 @@ Alongside the original `eminem.zip`, this repo contains a modern version of the 
 ## Run it
 
 Install [Eminem ScreenMate Setup.exe](Eminem%20ScreenMate%20Setup.exe), then choose **Eminem ScreenMate** in Windows Screen Saver Settings.
-The Start Menu app has a **Run now** button too. It supports playing the screensaver whether it is currently enabled or disabled, and also offers a shortcut to the Windows screensaver settings.
+The Start Menu app has a **Run now** button too. It also offers a shortcut to the Windows screensaver settings.
 
 Built for 64-bit Windows 10 and 11; tested on Windows 11.
 
